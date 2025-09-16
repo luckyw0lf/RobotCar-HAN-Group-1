@@ -1,19 +1,19 @@
 #include <Arduino.h>
-
-// put function declarations here:
-int myFunction(int, int);
+#include <motor.h>
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  leftMotor(256);
+  delay(200);
+  leftMotor(0);
+  delay(2000);
 }
 
 // put function definitions here:
 int myFunction(int x, int y) {
-  return x + y;
   
 }
