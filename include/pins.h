@@ -1,2 +1,7 @@
-#define MOTOR_LEFT_F 13
-#define MOTOR_LEFT_B 12 
+#define MOTOR_LEFT_F 3
+#define MOTOR_LEFT_B 6
+
+#define LED_LEFT_OUTSIDE 2
+#define LED_LEFT_INSIDE 4
+#define LED_RIGHT_INSIDE 7
+#define LED_RIGHT_OUTSIDE 8

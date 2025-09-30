@@ -3,5 +3,5 @@
 
 void leftMotor(int speed){
     analogWrite(MOTOR_LEFT_F, speed);
-    analogWrite(MOTOR_LEFT_B, LOW);
+    digitalWrite(MOTOR_LEFT_B, LOW);
 }
