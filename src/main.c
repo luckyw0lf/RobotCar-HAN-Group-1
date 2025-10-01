@@ -2,34 +2,30 @@
 #include <pins.h>
 #include <motor.h>
 
-unsigned long oldTime;
-unsigned long deltaTime;
-unsigned long lineTimer;
-
 void setup() {
   pinMode(MOTOR_LEFT_F, OUTPUT);
   pinMode(MOTOR_LEFT_B, OUTPUT);
-  pinMode(LED_LEFT_OUTSIDE, OUTPUT);
-  pinMode(LED_LEFT_INSIDE, OUTPUT);
-  pinMode(LED_RIGHT_INSIDE, OUTPUT);
-  pinMode(LED_RIGHT_OUTSIDE, OUTPUT);
+  pinMode(MOTOR_RIGHT_F, OUTPUT);
+  pinMode(MOTOR_RIGHT_B, OUTPUT);
+  pinMode(MOTOR_DOWN_LEFT_F, OUTPUT);
+  pinMode(MOTOR_DOWN_LEFT_B, OUTPUT);
+  pinMode(MOTOR_DOWN_RIGHT_F, OUTPUT);
+  pinMode(MOTOR_DOWN_RIGHT_B, OUTPUT);
+
+  pinMode(LED_LEFT_OUTSIDE, INPUT);
+  pinMode(LED_LEFT_INSIDE, INPUT);
+  pinMode(LED_RIGHT_INSIDE, INPUT);
+  pinMode(LED_RIGHT_OUTSIDE, INPUT);
 }
 
 void loop() {
-  unsigned long now = millis();
-  deltaTime = now - oldTime;
-  oldTime = now;
+  turnRight(150); // 0-255 max 
+  delay(1000);
+  emergencyStop(); // stops all motors at the same time 
+  delay(1000);
 
-  lineTimer += deltaTime;
-  if(lineTimer >= 10){
-    lineTimer = 0;
-
-
-  }
-
-
-  leftMotor(50);
-  delay(2000);
-  leftMotor(0);
+  turnLeft(150);
+  delay(1000);
+  emergencyStop();
   delay(2000);
 }
