@@ -2,17 +2,16 @@
 #define PINS_H
 
 //motor pins
-#define MOTOR_LEFT_F 3
-#define MOTOR_LEFT_B 6 //left top motor
+#define MOTOR_LEFT_P 10
+#define MOTOR_LEFT_N 9
 
-#define MOTOR_DOWN_LEFT_F 3
-#define MOTOR_DOWN_LEFT_B 6 //left botton motor
+#define MOTOR_RIGHT_P 6
+#define MOTOR_RIGHT_N 5
 
-#define MOTOR_RIGHT_F 3
-#define MOTOR_RIGHT_B 6 //right top motor
+// ultrasonic pins
+#define ULTRASONIC_TRIGGER 3
+#define ULTRASONIC_ECHO 2
 
-#define MOTOR_DOWN_RIGHT_F 3
-#define MOTOR_DOWN_RIGHT_B 6 //right bottom motor
 
 //line sensor pins
 #define LED_LEFT_OUTSIDE 2
