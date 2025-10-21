@@ -3,10 +3,10 @@
 #include "motor.h"
 #include "bluetooth.h"
 
-// Motor speed settings
-#define NORMAL_SPEED 200
-#define TURN_SPEED 180
-#define DIAGONAL_SPEED 170
+// Motor speed settings - will be updated from app
+static int currentSpeed = 200;  // Default speed (0-255)
+static int turnSpeed = 180;
+static int diagonalSpeed = 170;
 
 // Command buffer
 static char commandBuffer[10];
@@ -16,44 +16,79 @@ void bluetoothInit(void) {
     Serial.begin(9600);
 }
 
+// Function to check if a string is a number
+int isNumber(char* str) {
+    int i = 0;
+    while (str[i] != '\0') {
+        if (str[i] < '0' || str[i] > '9') {
+            return 0;  // Not a number
+        }
+        i++;
+    }
+    return 1;  // Is a number
+}
+
+// Function to convert string to integer
+int stringToInt(char* str) {
+    int result = 0;
+    int i = 0;
+    while (str[i] != '\0') {
+        result = result * 10 + (str[i] - '0');
+        i++;
+    }
+    return result;
+}
+
 void processCommand(char* command) {
+    if (isNumber(command)) {
+        int speedLevel = stringToInt(command);
+        if (speedLevel >= 0 && speedLevel <= 10) {
+            currentSpeed = (speedLevel * 255) / 10;
+            turnSpeed = (currentSpeed * 9) / 10;      // 90% of current speed
+            diagonalSpeed = (currentSpeed * 85) / 100; // 85% of current speed
+        }
+        return;
+    }
+    
+    // Movement commands
     if (command[0] == 'F' && command[1] == '\0') {
-        forward(NORMAL_SPEED);
+        // Forward
+        forward(currentSpeed);
         
     } else if (command[0] == 'B' && command[1] == '\0') {
-        backwards(NORMAL_SPEED);
+        // Backward
+        backwards(currentSpeed);
         
     } else if (command[0] == 'L' && command[1] == '\0') {
-        turnLeft(TURN_SPEED);
+        // Turn Left
+        turnLeft(turnSpeed);
         
     } else if (command[0] == 'R' && command[1] == '\0') {
-        turnRight(TURN_SPEED);
+        // Turn Right
+        turnRight(turnSpeed);
         
     } else if (command[0] == 'F' && command[1] == 'L' && command[2] == '\0') {
-        leftMotor(DIAGONAL_SPEED / 2);
-        leftDownMotor(DIAGONAL_SPEED / 2);
-        RightMotor(DIAGONAL_SPEED);
-        RightDownMotor(DIAGONAL_SPEED);
+        // Forward Left (diagonal)
+        leftMotor(diagonalSpeed / 2);
+        rightMotor(diagonalSpeed);
         
     } else if (command[0] == 'F' && command[1] == 'R' && command[2] == '\0') {
-        leftMotor(DIAGONAL_SPEED);
-        leftDownMotor(DIAGONAL_SPEED);
-        RightMotor(DIAGONAL_SPEED / 2);
-        RightDownMotor(DIAGONAL_SPEED / 2);
+        // Forward Right (diagonal)
+        leftMotor(diagonalSpeed);
+        rightMotor(diagonalSpeed / 2);
         
     } else if (command[0] == 'B' && command[1] == 'L' && command[2] == '\0') {
-        leftMotorRev(DIAGONAL_SPEED / 2);
-        leftDownMotorRev(DIAGONAL_SPEED / 2);
-        RightMotorRev(DIAGONAL_SPEED);
-        RightDownMotorRev(DIAGONAL_SPEED);
+        // Backward Left (diagonal)
+        leftMotor(-diagonalSpeed / 2);
+        rightMotor(-diagonalSpeed);
         
     } else if (command[0] == 'B' && command[1] == 'R' && command[2] == '\0') {
-        leftMotorRev(DIAGONAL_SPEED);
-        leftDownMotorRev(DIAGONAL_SPEED);
-        RightMotorRev(DIAGONAL_SPEED / 2);
-        RightDownMotorRev(DIAGONAL_SPEED / 2);
+        // Backward Right (diagonal)
+        leftMotor(-diagonalSpeed);
+        rightMotor(-diagonalSpeed / 2);
         
     } else if (command[0] == 'S' && command[1] == '\0') {
+        // Stop
         emergencyStop();
     }
 }
@@ -88,4 +123,8 @@ void bluetoothUpdate(void) {
 
 void bluetoothSend(char* message) {
     Serial.println(message);
+}
+
+int getCurrentSpeed(void) {
+    return currentSpeed;
 }

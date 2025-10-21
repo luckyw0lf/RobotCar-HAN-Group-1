@@ -13,4 +13,6 @@ void processCommand(char* command);
 // Send data back to Flutter app
 void bluetoothSend(char* message);
 
+int getCurrentSpeed(void);
+
 #endif
