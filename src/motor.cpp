@@ -6,7 +6,7 @@
 void leftMotor(int speed){
     if(speed < 0){
         digitalWrite(MOTOR_LEFT_P, LOW);
-        analogWrite(MOTOR_LEFT_N, speed);
+        analogWrite(MOTOR_LEFT_N, -speed);
         return;
     }
     analogWrite(MOTOR_LEFT_P, speed);
@@ -16,7 +16,7 @@ void leftMotor(int speed){
 void rightMotor(int speed){
     if(speed < 0){
         digitalWrite(MOTOR_RIGHT_P, LOW);
-        analogWrite(MOTOR_RIGHT_N, speed);
+        analogWrite(MOTOR_RIGHT_N, -speed);
 
         return;
     }
