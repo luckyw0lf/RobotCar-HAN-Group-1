@@ -14,9 +14,8 @@
 
 
 //line sensor pins
-#define LED_LEFT_OUTSIDE 2
-#define LED_LEFT_INSIDE 4
-#define LED_RIGHT_INSIDE 7
-#define LED_RIGHT_OUTSIDE 8
+#define LED_LEFT 11
+#define LED_RIGHT 12
+#define LED_CENTER 8
 
 #endif

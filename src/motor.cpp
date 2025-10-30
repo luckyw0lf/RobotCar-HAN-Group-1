@@ -26,13 +26,13 @@ void rightMotor(int speed){
 
 //turn the car right
 void turnRight(int speed) {
-    leftMotor(speed);
-    rightMotor(-speed);
+    leftMotor(-speed);
+    rightMotor(speed);
 }
 //turn the car left 
 void turnLeft(int speed) {
-    leftMotor(-speed);
-    rightMotor(speed);
+    leftMotor(speed);
+    rightMotor(-speed);
 }
 //forward car movement
 void forward(int speed){

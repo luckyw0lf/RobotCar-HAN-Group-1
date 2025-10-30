@@ -3,6 +3,8 @@
 #include <motor.h>
 #include "bluetooth.h"
 #include <SoftwareSerial.h>
+#include <ultrasonic.h>
+#include <line_sensor.h>
 
 unsigned long oldTime;
 unsigned long deltaTime;
@@ -16,12 +18,12 @@ void setup() {
   pinMode(MOTOR_RIGHT_N, OUTPUT);
 
   // LED/Sensor pins
-  pinMode(LED_LEFT_OUTSIDE, INPUT);
-  pinMode(LED_LEFT_INSIDE, INPUT);
-  pinMode(LED_RIGHT_INSIDE, INPUT);
-  pinMode(LED_RIGHT_OUTSIDE, INPUT);
+  pinMode(LED_LEFT, INPUT);
+  pinMode(LED_RIGHT, INPUT);
+  pinMode(LED_CENTER, INPUT);
 
     bluetoothInit();
+    ultrasonicInit();
 }
 
 void loop() {
@@ -30,7 +32,9 @@ void loop() {
   oldTime = now;
 
   bluetoothUpdate();
-  
+  updateLineSensors();
+  // obstacleAvoidance();
+
   // if(updateDelay >= 100){
   //     // Check for bluetooth
   //     // Reset the delay timer.
