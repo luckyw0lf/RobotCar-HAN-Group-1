@@ -19,4 +19,8 @@
 #define LED_RIGHT_INSIDE 7
 #define LED_RIGHT_OUTSIDE 8
 
+//button pins
+#define BUTTON_SWITCH 0
+
+
 #endif
