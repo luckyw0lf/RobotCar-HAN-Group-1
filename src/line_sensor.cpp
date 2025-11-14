@@ -1,19 +1,49 @@
 #include <Arduino.h>
 #include <pins.h>
+#include <motor.h>
 
-int getDrivingDirection(){
-    int Left_Outside = digitalRead(LED_LEFT_OUTSIDE); // -1
-    int Left_Inside = digitalRead(LED_LEFT_INSIDE); // -.5
-    int Right_Inside = digitalRead(LED_RIGHT_INSIDE); // .5
-    int Right_Outside = digitalRead(LED_RIGHT_OUTSIDE);// 1
+bool left_sensor = false;
+bool right_sensor = false;
+bool center_sensor = false;
 
-    if(Left_Outside || Right_Outside){
-        return Left_Outside * -1.0f + Right_Outside * 1.0f;
+
+void updateLineSensors(){
+    // When black, returns true
+    left_sensor = digitalRead(LED_LEFT);
+    right_sensor = digitalRead(LED_RIGHT);
+    center_sensor = digitalRead(LED_CENTER);
+
+    if(center_sensor && !right_sensor && !left_sensor){
+        forward(75);
+        return;
     }
 
-    if(Left_Inside || Right_Inside){
-        return Left_Inside * -.5f + Right_Inside * .5f; 
+    if(!center_sensor && !right_sensor && !left_sensor){
+        forward(75);
+        return;
     }
 
-    return 0;
+    if(center_sensor && right_sensor){
+        turnRight(150);
+        return;
+    }
+
+    if(center_sensor && left_sensor){
+        turnLeft(150);
+        return;
+    }
+
+    if(right_sensor){
+        turnRight(150);
+        return;
+    }
+
+    if(left_sensor){
+        turnLeft(150);
+        return;
+    }
+
+    emergencyStop();
+    
 }
+

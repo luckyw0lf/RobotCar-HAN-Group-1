@@ -13,18 +13,13 @@ int mode = 0;
 bool lastButtonState = HIGH;  
 unsigned long lastDebounceTime = 0;
 const unsigned long debounceDelay = 50; 
+
 void setup() {
   // Motor pins
   pinMode(MOTOR_LEFT_P, OUTPUT);
   pinMode(MOTOR_LEFT_N, OUTPUT);
   pinMode(MOTOR_RIGHT_P, OUTPUT);
   pinMode(MOTOR_RIGHT_N, OUTPUT);
-
-  // LED/Sensor pins
-  pinMode(LED_LEFT_OUTSIDE, INPUT);
-  pinMode(LED_LEFT_INSIDE, INPUT);
-  pinMode(LED_RIGHT_INSIDE, INPUT);
-  pinMode(LED_RIGHT_OUTSIDE, INPUT);
   
   pinMode(BUTTON_SWITCH, INPUT_PULLUP);
 
@@ -63,7 +58,7 @@ void loop() {
       break;
 
     case 1:
-      getDrivingDirection(); // Line tracking
+      updateLineSensors(); // Line tracking
       break;
 
     case 2:
