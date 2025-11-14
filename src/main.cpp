@@ -9,7 +9,8 @@
 unsigned long oldTime;
 unsigned long deltaTime;
 unsigned long updateDelay;
-int mode = 0;                 
+int mode = 0;           
+enum Mode {BLUETOOTH, LINE, OBSTICAL, ALWAYS_AT_END};    
 bool lastButtonState = HIGH;  
 unsigned long lastDebounceTime = 0;
 const unsigned long debounceDelay = 50; 
@@ -38,7 +39,7 @@ void checkButton() {
     // Button is stable
     if (reading == LOW && lastButtonState == HIGH) {
       mode++;
-      if (mode > 2) mode = 0;
+      if (mode == Mode::ALWAYS_AT_END) mode = 0;
     }
   }
   
@@ -53,15 +54,15 @@ void loop() {
   checkButton();
   
   switch (mode) {
-    case 0:
+    case BLUETOOTH:
       bluetoothUpdate(); // Manual driving
       break;
 
-    case 1:
+    case LINE:
       updateLineSensors(); // Line tracking
       break;
 
-    case 2:
+    case OBSTICAL:
       obstacleAvoidance(); // Ultrasonic sensor 
       break;
   }
