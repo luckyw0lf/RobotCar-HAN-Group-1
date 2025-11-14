@@ -11,6 +11,9 @@ void turnRight(int speed);
 void backwards(int speed);
 void forward(int speed);
 
+void vectorTurnLeft(int speed, int diff);
+void vectorTurnRight(int speed, int diff);
+
 // emergency stop
 void emergencyStop();
 

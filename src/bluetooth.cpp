@@ -4,13 +4,13 @@
 #include "bluetooth.h"
 
 // Motor speed settings - will be updated from app
-static int currentSpeed = 100;  // Default speed (0-255)
-static int turnSpeed = 130;
-static int diagonalSpeed = 170;
+static int currentSpeed = 255;  // Default speed (0-255)
+static int turnSpeed = 255;
+// static int diagonalSpeed = 170;
 
-// Command buffer
-static char commandBuffer[10];
-static int bufferIndex = 0;
+// // Command buffer
+// static char commandBuffer[10];
+// static int bufferIndex = 0;
 
 void  bluetoothInit(void) {
     // Serial.begin(38400);
@@ -27,6 +27,8 @@ void bluetoothUpdate(){
       case 'B': forward(-currentSpeed); break;
       case 'L': turnLeft(turnSpeed);    break;
       case 'R': turnRight(turnSpeed);   break;
+      case 'A': vectorTurnLeft(currentSpeed, 150);   break;
+      case 'D': vectorTurnRight(currentSpeed, 150);   break;
       case 'S': emergencyStop();   break;
       default:  /* ignore */      break;
     }
