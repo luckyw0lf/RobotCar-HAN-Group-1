@@ -22,22 +22,25 @@ void init_usart_async_normal_rxtx(unsigned long rate, unsigned char framesize, u
 	//UCSZn0:1 in UCSR0C, UCSR0C2 in UCSR0B
 	if (framesize == 8)
 	{
+		UCSR0B &= ~(1<<UCSZ02);
 		UCSR0C |= (1<<UCSZ01)|(1<<UCSZ00);
-		UCSR0C &= ~(1<<UCSZ02);
 	}
 	else if (framesize == 7)
 	{
+		UCSR0B &= ~(1<<UCSZ02);
 		UCSR0C |= (1<<UCSZ01);
-		UCSR0C &= ~((1<<UCSZ02)|(1<<UCSZ00));
+		UCSR0C &= ~(1<<UCSZ00);
 	}
 	else if (framesize == 6)
 	{
+		UCSR0B &= ~(1<<UCSZ02);
 		UCSR0C |= (1<<UCSZ00);
-		UCSR0C &= ~((1<<UCSZ02)|(1<<UCSZ01));
+		UCSR0C &= ~(1<<UCSZ01);
 	}
 	else if (framesize == 5)
 	{
-		UCSR0C |= ~((0<<UCSZ02)|(0<<UCSZ01)|(0<<UCSZ00));
+		UCSR0B |= ~(1<<UCSZ02);
+		UCSR0C |= ~((1<<UCSZ01)|(1<<UCSZ00));
 	}
 	else if (framesize == 9)
 	{
@@ -54,7 +57,7 @@ void init_usart_async_normal_rxtx(unsigned long rate, unsigned char framesize, u
 	UBRR0L = (unsigned char)(ubrrval & 0xFF);
 
 	//enable rx and tx
-	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+	UCSR0B |= (1<<RXEN0)|(1<<TXEN0);
 }
 
 void enable_usart_rx_isr(void)
