@@ -23,17 +23,17 @@ void init_usart_async_normal_rxtx(unsigned long rate, unsigned char framesize, u
 	if (framesize == 8)
 	{
 		UCSR0C |= (1<<UCSZ01)|(1<<UCSZ00);
-		UCSR0C &= ~(1<<UCSZ02)
+		UCSR0C &= ~(1<<UCSZ02);
 	}
 	else if (framesize == 7)
 	{
 		UCSR0C |= (1<<UCSZ01);
-		UCSR0C &= ~((1<<UCSZ02)|(1<<UCSZ00))
+		UCSR0C &= ~((1<<UCSZ02)|(1<<UCSZ00));
 	}
 	else if (framesize == 6)
 	{
 		UCSR0C |= (1<<UCSZ00);
-		UCSR0C &= ~((1<<UCSZ02)|(1<<UCSZ01))
+		UCSR0C &= ~((1<<UCSZ02)|(1<<UCSZ01));
 	}
 	else if (framesize == 5)
 	{
