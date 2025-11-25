@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3
+
 F_CPU="16000000"
 if [ -n "$1" ]; then
 	# for all prescaler values
