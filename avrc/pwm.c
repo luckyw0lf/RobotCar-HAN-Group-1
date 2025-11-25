@@ -5,7 +5,7 @@
 #include <avr/io.h>
 #include <util/atomic.h>
 
-unsigned int ICR1_val(unsigned long f_cpu, unsigned long f_pwm, unsigned int prescaler)
+unsigned int pwm_ICRn_val(unsigned long f_cpu, unsigned long f_pwm, unsigned int prescaler)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
