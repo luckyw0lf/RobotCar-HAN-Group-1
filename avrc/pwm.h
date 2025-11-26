@@ -8,6 +8,14 @@
 //duty10 = ((pwm_ICRn_val(F_CPU, 50, 128))/10)
 unsigned int pwm_ICRn_val(unsigned long f_cpu, unsigned long f_pwm, unsigned int prescaler);
 
+//init_fastpwm_ocr0a() will configure Timer0 for fastpwm mode with TOP in ocr0a
+//reffer to a datasheet for available prescaler values
+//default value for prescaler on TIMER1 is 1
+//
+//NOTE: this function will NOT set ICR0 and OCR0, set them manually
+//with set_top_in_ocr0a() and set_duty_ocr1A()
+void init_fastpwm_ocr0a(unsigned int prescaler)
+
 //init_fastpwm_icr1() will configure Timer1 for fastpwm mode with TOP in ICR1
 //reffer to a datasheet for available prescaler values
 //default value for prescaler on TIMER1 is 1

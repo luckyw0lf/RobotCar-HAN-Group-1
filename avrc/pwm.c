@@ -52,6 +52,44 @@ void init_fastpwm_icr1(unsigned int prescaler)
 	}
 }
 
+void init_fastpwm_ocr0a(unsigned int prescaler)
+{
+	//fastpwm with TOP in OCR0
+	TCCR0A |= (1<<WGM01)|(1<<WGM00);
+	TCCR0B |= (1<<WGM02);
+
+	if (prescaler == 1024)
+	{
+		TCCR0B |= (1<<CS02)|(1<<CS00);
+		TCCR0B &= ~(1<<CS01);
+	}
+	else if (prescaler == 256)
+	{
+		TCCR0B |= (1<<CS02);
+		TCCR0B &= ~((1<<CS01)|(1<<CS00));
+	}
+	else if (prescaler == 64)
+	{
+		TCCR0B |= (1<<CS01)|(1<<CS00);
+		TCCR0B &= ~(1<<CS02);
+	}
+	else if (prescaler == 8)
+	{
+		TCCR0B |= (1<<CS01);
+		TCCR0B &= ~((1<<CS02)|(1<<CS00));
+
+	}
+	else if (prescaler == 0)
+	{
+		TCCR0B &= ~((1<<CS02)|(1<<CS01)|(1<<CS00));
+	}
+	else
+	{
+		//(prescaler == 1)
+		TCCR0B |= (1<<CS00);
+		TCCR0B &= ~((1<<CS02)|(1<<CS01));
+	}
+}
 void set_top_in_icr1(unsigned int ICR1_value)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
