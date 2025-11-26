@@ -19,7 +19,7 @@ unsigned long millis(void)
 		ms = timer;
 	return (ms);
 }
-void millis_init(void)
+void millis_init_timer0(void)
 {
 	TCCR0A = (1<<WGM01);			//CTC
 	TCCR0B = (1<<CS01)|(1<<CS00);	//prescaler 64
