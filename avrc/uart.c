@@ -10,6 +10,10 @@
 
 void init_usart_async_normal_rxtx(unsigned long rate, unsigned char framesize, unsigned char stopsize)
 {
+	//overwrite previous configuration
+	UCSR0B = 0;
+	UCSR0C = 0;
+
 	//set async mode
 	UCSR0C &= ~((1<<UMSEL01)|(1<<UMSEL00));
 	//todo: set normal mode
