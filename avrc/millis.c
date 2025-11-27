@@ -9,8 +9,8 @@
 #include <avr/interrupt.h>
 #include <util/atomic.h>
 
-volatile long timer = 0;
-volatile long ms = 0;
+volatile unsigned long timer = 0;
+volatile unsigned long ms = 0;
 
 #ifdef MILLIS_TIMER0
 	ISR(TIMER0_COMPA_vect)
