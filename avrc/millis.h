@@ -2,7 +2,9 @@
 #ifndef MILLIS_H_
  #define MILLIS_H_
 
-void millis_init_timer0(void);
+void init_millis_timer0(void);
+
+void init_millis_timer1(void);
 
 unsigned long millis(void);
 
