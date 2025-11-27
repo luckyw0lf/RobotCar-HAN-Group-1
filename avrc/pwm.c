@@ -16,8 +16,8 @@ unsigned int pwm_ICRn_val(unsigned long f_cpu, unsigned long f_pwm, unsigned int
 void init_fastpwm_icr1(unsigned int prescaler)
 {
 	//fastpwm with TOP in ICR1
-	TCCR1A |= (1<<WGM11);
-	TCCR1B |= (1<<WGM13)|(1<<WGM12);
+	TCCR1A = (1<<WGM11);
+	TCCR1B = (1<<WGM13)|(1<<WGM12);
 
 	if (prescaler == 1024)
 	{
@@ -55,8 +55,8 @@ void init_fastpwm_icr1(unsigned int prescaler)
 void init_fastpwm_ocr0a(unsigned int prescaler)
 {
 	//fastpwm with TOP in OCR0
-	TCCR0A |= (1<<WGM01)|(1<<WGM00);
-	TCCR0B |= (1<<WGM02);
+	TCCR0A = (1<<WGM01)|(1<<WGM00);
+	TCCR0B = (1<<WGM02);
 
 	if (prescaler == 1024)
 	{
