@@ -15,6 +15,9 @@ ISR(ADC_vect)
 #endif
 void adc_init(unsigned char prescaler)
 {
+	//init
+	ADCSRA = 0;
+
 	if (prescaler == 128)
 		ADCSRA = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
 	else if (prescaler == 64)
