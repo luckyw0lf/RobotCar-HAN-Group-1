@@ -28,6 +28,14 @@ volatile unsigned long ms = 0;
 	}
 #endif //MILLIS_TIMER1
 
+#ifdef MILLIS_TIMER2
+	ISR(TIMER2_COMPA_vect)
+	{
+		ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+			timer++;
+	}
+#endif //MILLIS_TIMER2
+
 unsigned long millis(void)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
