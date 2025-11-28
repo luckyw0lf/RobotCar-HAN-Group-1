@@ -1,41 +1,14 @@
 //GPL-3.0-only
 #define __AVR_ATmega328P__
 
-#define MILLIS_TIMER0
-//#define MILLIS_TIMER1
-//#define MILLIS_TIMER2
-
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/atomic.h>
 
-volatile unsigned long timer = 0;
+
+extern volatile unsigned long timer;
+
 volatile unsigned long ms = 0;
-
-#ifdef MILLIS_TIMER0
-	ISR(TIMER0_COMPA_vect)
-	{
-		ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-			timer++;
-	}
-#endif //MILLIS_TIMER0
-
-#ifdef MILLIS_TIMER1
-	ISR(TIMER1_COMPA_vect)
-	{
-		ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-			timer++;
-	}
-#endif //MILLIS_TIMER1
-
-#ifdef MILLIS_TIMER2
-	ISR(TIMER2_COMPA_vect)
-	{
-		ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-			timer++;
-	}
-#endif //MILLIS_TIMER2
-
 unsigned long millis(void)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
