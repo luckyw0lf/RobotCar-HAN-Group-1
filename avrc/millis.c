@@ -51,14 +51,11 @@ void init_millis_timer1(void)
 	OCR1A = 1999;
 	TIMSK1 |= (1<<OCIE1A);			//CTC interrupt
 }
-//void millis_init_timer2(void)
-//{
-//	//(if clkT2S = 32768hz)
-//	//./utils/timer-ICRn-helper.sh "10 ^ -3"
-//	//prescaler    1	ICRn =    32	8bit TIMER ok
-//	//prescaler    8	ICRn =     3	8bit TIMER ok
-//	TCCR2A = ;			//CTC
-//	TCCR2B = ;	//prescaler 1
-//	OCR2A = 32;	//clk 32768hz
-//	TIMSK2 |= (1<<OCIE2A);			//CTC interrupt
-//}
+void millis_init_timer2(void)
+{
+	TCCR2A = (1<<WGM21);		//CTC
+	TCCR2B = (1<<CS22);			//prescaler 64
+	OCR2A = 249;
+	TIMSK2 |= (1<<OCIE2A);		//CTC interrupt
+
+}
