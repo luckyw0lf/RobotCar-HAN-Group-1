@@ -20,7 +20,7 @@ void init_millis_timer0(void)
 	TCCR0A = (1<<WGM01);			//CTC
 	TCCR0B = (1<<CS01)|(1<<CS00);	//prescaler 64
 	OCR0A = 249;
-	TIMSK0 |= (1<<OCIE0A);			//CTC interrupt
+	TIMSK0 = (1<<OCIE0A);			//CTC interrupt
 }
 void init_millis_timer1(void)
 {
@@ -30,13 +30,13 @@ void init_millis_timer1(void)
 
 	TCCR1B = (1<<WGM12)|(1<<CS11);	//prescaler 8, CTC with top in OCR1A
 	OCR1A = 1999;
-	TIMSK1 |= (1<<OCIE1A);			//CTC interrupt
+	TIMSK1 = (1<<OCIE1A);			//CTC interrupt
 }
 void init_millis_timer2(void)
 {
 	TCCR2A = (1<<WGM21);		//CTC
 	TCCR2B = (1<<CS22);			//prescaler 64
 	OCR2A = 249;
-	TIMSK2 |= (1<<OCIE2A);		//CTC interrupt
+	TIMSK2 = (1<<OCIE2A);		//CTC interrupt
 
 }
