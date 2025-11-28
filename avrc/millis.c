@@ -59,7 +59,7 @@ void init_millis_timer1(void)
 	OCR1A = 1999;
 	TIMSK1 |= (1<<OCIE1A);			//CTC interrupt
 }
-void millis_init_timer2(void)
+void init_millis_timer2(void)
 {
 	TCCR2A = (1<<WGM21);		//CTC
 	TCCR2B = (1<<CS22);			//prescaler 64

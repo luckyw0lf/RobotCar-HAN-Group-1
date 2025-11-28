@@ -6,6 +6,8 @@ void init_millis_timer0(void);
 
 void init_millis_timer1(void);
 
+void init_millis_timer2(void);
+
 unsigned long millis(void);
 
 #endif // MILLIS_H_
