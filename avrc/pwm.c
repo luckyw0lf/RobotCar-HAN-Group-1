@@ -20,36 +20,17 @@ void init_fastpwm_icr1(unsigned int prescaler)
 	TCCR1B = (1<<WGM13)|(1<<WGM12);
 
 	if (prescaler == 1024)
-	{
 		TCCR1B |= (1<<CS12)|(1<<CS10);
-		TCCR1B &= ~(1<<CS11);
-	}
 	else if (prescaler == 256)
-	{
 		TCCR1B |= (1<<CS12);
-		TCCR1B &= ~((1<<CS11)|(1<<CS10));
-	}
 	else if (prescaler == 64)
-	{
 		TCCR1B |= (1<<CS11)|(1<<CS10);
-		TCCR1B &= ~(1<<CS12);
-	}
 	else if (prescaler == 8)
-	{
 		TCCR1B |= (1<<CS11);
-		TCCR1B &= ~((1<<CS12)|(1<<CS10));
-
-	}
 	else if (prescaler == 0)
-	{
-		TCCR1B &= ~((1<<CS12)|(1<<CS11)|(1<<CS10));
-	}
+		;	//No clock source (Timer/Counter stopped).
 	else
-	{
-		//(prescaler == 1)
-		TCCR1B |= (1<<CS10);
-		TCCR1B &= ~((1<<CS12)|(1<<CS11));
-	}
+		TCCR1B |= (1<<CS10);	//prescaler 1
 }
 
 void init_fastpwm_ocr0a(unsigned int prescaler)
@@ -59,36 +40,17 @@ void init_fastpwm_ocr0a(unsigned int prescaler)
 	TCCR0B = (1<<WGM02);
 
 	if (prescaler == 1024)
-	{
 		TCCR0B |= (1<<CS02)|(1<<CS00);
-		TCCR0B &= ~(1<<CS01);
-	}
 	else if (prescaler == 256)
-	{
 		TCCR0B |= (1<<CS02);
-		TCCR0B &= ~((1<<CS01)|(1<<CS00));
-	}
 	else if (prescaler == 64)
-	{
 		TCCR0B |= (1<<CS01)|(1<<CS00);
-		TCCR0B &= ~(1<<CS02);
-	}
 	else if (prescaler == 8)
-	{
 		TCCR0B |= (1<<CS01);
-		TCCR0B &= ~((1<<CS02)|(1<<CS00));
-
-	}
 	else if (prescaler == 0)
-	{
-		TCCR0B &= ~((1<<CS02)|(1<<CS01)|(1<<CS00));
-	}
+		;	//No clock source (Timer/Counter stopped).
 	else
-	{
-		//(prescaler == 1)
-		TCCR0B |= (1<<CS00);
-		TCCR0B &= ~((1<<CS02)|(1<<CS01));
-	}
+		TCCR0B |= (1<<CS00);	//prescaler 1
 }
 void set_top_in_icr1(unsigned int ICR1_value)
 {
