@@ -48,7 +48,7 @@ void adc_init(unsigned char prescaler)
 	ADMUX = (1<<REFS0);		//AVcc with external capacitor at AREF pin
 	ADMUX &= ~(1<<REFS1);	//
 
-	ADCSRA = (1<<ADEN); //ADC enable
+	ADCSRA |= (1<<ADEN); //ADC enable
 	ADCSRA &= ~(1<<ADSC); //do not start conversion
 }
 void adc_init_free(void)
