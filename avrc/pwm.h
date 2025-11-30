@@ -2,7 +2,7 @@
 #ifndef PWM_H_
  #define PWM_H_
 
-//pwm_ICRn_val() calculates ICRn value
+//pwm_ICRn_val() calculates ICRn/OCRn value
 //can be used to calculate duty value
 //(assuming desired duty value is 10%, PWM frequency 50Hz and prescaler 128)
 //duty10 = ((pwm_ICRn_val(F_CPU, 50, 128))/10)
@@ -24,6 +24,13 @@ void init_fastpwm_ocr0a(unsigned int prescaler);
 //with set_top_in_icr1() and set_duty_ocr1A()
 void init_fastpwm_icr1(unsigned int prescaler);
 
+//set_top_in_ocr0a() expets a value that will be written to OCR0 register
+//use pwm_ICRn_val function to get ICR1 value
+//(assuming desired PWM frequency is 50Hz, prescaler is 128)
+//
+//set_top_in_ocr0a(pwm_ICRn_val(F_CPU, 50, 128))
+void set_top_in_ocr0a(unsigned int ICR1_value)
+
 //set_top_in_icr1() expets a value that will be written to ICR1 register
 //use pwm_ICRn_val function to get ICR1 value
 //(assuming desired PWM frequency is 50Hz, prescaler is 128)
@@ -31,7 +38,7 @@ void init_fastpwm_icr1(unsigned int prescaler);
 //set_top_in_icr1(pwm_ICRn_val(F_CPU, 50, 128))
 void set_top_in_icr1(unsigned int pwm_ICRn_value);
 
-//fastpwm signal on channel A (PB1)
+//fastpwm signal on channel A (PB1), TIMER1
 //
 //set_duty_ocr1A(pwm_ICRn_val(...))
 void set_duty_ocr1A(unsigned int duty);
@@ -44,4 +51,17 @@ void set_duty_ocr1AB(unsigned int duty);
 void set_duty_inverted_ocr1A(unsigned int duty);
 void set_duty_inverted_ocr1B(unsigned int duty);
 void set_duty_inverted_ocr1AB(unsigned int duty);
+
+
+//fastpwm signal on channel A (PD6), TIMER0
+//
+//set_duty_ocr0A(pwm_ICRn_val(...))
+void set_duty_ocr0A(unsigned int duty);
+void set_duty_ocr0B(unsigned int duty);
+void set_duty_ocr0AB(unsigned int duty);
+
+//inverted mode
+void set_duty_inverted_ocr0A(unsigned int duty);
+void set_duty_inverted_ocr0B(unsigned int duty);
+void set_duty_inverted_ocr0AB(unsigned int duty);
 #endif // PWM_H_

@@ -32,7 +32,6 @@ void init_fastpwm_icr1(unsigned int prescaler)
 	else
 		TCCR1B |= (1<<CS10);	//prescaler 1
 }
-
 void init_fastpwm_ocr0a(unsigned int prescaler)
 {
 	//fastpwm with TOP in OCR0
@@ -67,6 +66,7 @@ void set_top_in_ocr0a(unsigned int ICR1_value)
 		OCR0A = ICR1_value;
 	}
 }
+//this is for FastPWM on TIMER1
 void set_duty_ocr1A(unsigned int duty)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
@@ -103,7 +103,6 @@ void set_duty_ocr1AB(unsigned int duty)
 		OCR1B = duty;
 	}
 }
-
 void set_duty_inverted_ocr1A(unsigned int duty)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
@@ -140,3 +139,80 @@ void set_duty_inverted_ocr1AB(unsigned int duty)
 		OCR1B = duty;
 	}
 }
+//END for FastPWM on TIMER1
+
+//this is for FastPWM on TIMER0
+void set_duty_ocr0A(unsigned char duty)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		//Clear OC0A on compare match, set OC0A at BOTTOM,
+		//(non-inverting mode).
+		TCCR0A |= (1<<COM0A1);
+		TCCR0A &= ~(1<<COM0A0);
+
+		//i don't think atomic access is necessary...
+		OCR0A = duty;	//8bit reg, one write operation
+	}
+}
+void set_duty_ocr0B(unsigned char duty)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		TCCR0A |= (1<<COM0B1);
+		TCCR0A &= ~(1<<COM0B0);
+
+		OCR0B = duty;
+	}
+}
+void set_duty_ocr0AB(unsigned char duty)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		TCCR0A |= (1<<COM0A1);
+		TCCR0A &= ~(1<<COM0A0);
+
+		TCCR0A |= (1<<COM0B1);
+		TCCR0A &= ~(1<<COM0B0);
+
+		OCR0A = duty;
+		OCR0B = duty;
+	}
+}
+void set_duty_inverted_ocr0A(unsigned char duty)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		//Set OC0A on compare match, clear OC0A at BOTTOM
+		//(inverting mode)
+		TCCR0A |= (1<<COM0A1);
+		TCCR0A |= (1<<COM0A0);
+
+		OCR0A = duty;
+	}
+}
+void set_duty_inverted_ocr0B(unsigned char duty)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		TCCR0A |= (1<<COM0B1);
+		TCCR0A |= (1<<COM0B0);
+
+		OCR0B = duty;
+	}
+}
+void set_duty_inverted_ocr0AB(unsigned char duty)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		TCCR0A |= (1<<COM0A1);
+		TCCR0A |= (1<<COM0A0);
+
+		TCCR0A |= (1<<COM0B1);
+		TCCR0A |= (1<<COM0B0);
+
+		OCR0A = duty;
+		OCR0B = duty;
+	}
+}
+//END for FastPWM on TIMER0
