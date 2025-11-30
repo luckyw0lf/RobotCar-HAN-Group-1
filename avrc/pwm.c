@@ -59,7 +59,14 @@ void set_top_in_icr1(unsigned int ICR1_value)
 		ICR1 = ICR1_value;
 	}
 }
-
+void set_top_in_ocr0a(unsigned int ICR1_value)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		//PD6
+		OCR0A = ICR1_value;
+	}
+}
 void set_duty_ocr1A(unsigned int duty)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
