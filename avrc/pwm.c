@@ -144,22 +144,16 @@ void set_duty_inverted_ocr1AB(unsigned int duty)
 //this is for FastPWM on TIMER0
 void set_duty_ocr0B(unsigned char duty)
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		TCCR0A |= (1<<COM0B1);
-		TCCR0A &= ~(1<<COM0B0);
+	TCCR0A |= (1<<COM0B1);
+	TCCR0A &= ~(1<<COM0B0);
 
-		OCR0B = duty;
-	}
+	OCR0B = duty;
 }
 void set_duty_inverted_ocr0B(unsigned char duty)
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		TCCR0A |= (1<<COM0B1);
-		TCCR0A |= (1<<COM0B0);
+	TCCR0A |= (1<<COM0B1);
+	TCCR0A |= (1<<COM0B0);
 
-		OCR0B = duty;
-	}
+	OCR0B = duty;
 }
 //END for FastPWM on TIMER0
