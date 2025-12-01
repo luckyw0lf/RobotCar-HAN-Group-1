@@ -56,12 +56,8 @@ void set_duty_inverted_ocr1AB(unsigned int duty);
 //fastpwm signal on channel A (PD6), TIMER0
 //
 //set_duty_ocr0A(pwm_ICRn_val(...))
-void set_duty_ocr0A(unsigned int duty);
 void set_duty_ocr0B(unsigned int duty);
-void set_duty_ocr0AB(unsigned int duty);
 
 //inverted mode
-void set_duty_inverted_ocr0A(unsigned int duty);
 void set_duty_inverted_ocr0B(unsigned int duty);
-void set_duty_inverted_ocr0AB(unsigned int duty);
 #endif // PWM_H_
