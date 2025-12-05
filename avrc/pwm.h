@@ -29,7 +29,7 @@ void init_fastpwm_icr1(unsigned int prescaler);
 //(assuming desired PWM frequency is 50Hz, prescaler is 128)
 //
 //set_top_in_ocr0a(pwm_ICRn_val(F_CPU, 50, 128))
-void set_top_in_ocr0a(unsigned int ICR1_value)
+void set_top_in_ocr0a(unsigned int ICR1_value);
 
 //set_top_in_icr1() expets a value that will be written to ICR1 register
 //use pwm_ICRn_val function to get ICR1 value
