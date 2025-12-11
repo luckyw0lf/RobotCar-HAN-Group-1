@@ -1,8 +1,8 @@
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "millis.h"
-#include "uart.h"
+#include "../avrc/millis.h"
+#include "../avrc/uart.h"
 #include "ultrasonic.h"
 
 int main(void)

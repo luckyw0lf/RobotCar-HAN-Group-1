@@ -92,7 +92,7 @@ void ultrasonic_init()
 	PORTD |= (1 << PD2); // this is for pull up resistance
 	
 	EICRA = (1 << ISC00); //external interupt control register is set to to (01) this means on any change to detect rising and falling edge
-	EIMSK = (1 << INT0); //enable interupt 
+	EIMSK = (1 << INT0); //enable interupt
 	
 	timer1_init();
 }
