@@ -5,26 +5,40 @@
 #include <avr/interrupt.h>
 #include <util/atomic.h>
 
-volatile long timer = 0;
-volatile long ms = 0;
 
-ISR(TIMER0_COMPA_vect)
-{
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-		timer++;
-}
+extern volatile unsigned long timer;
+
+volatile unsigned long ms = 0;
 unsigned long millis(void)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 		ms = timer;
 	return (ms);
 }
-void millis_init(void)
+void init_millis_timer0(void)
 {
 	TCCR0A = (1<<WGM01);			//CTC
 	TCCR0B = (1<<CS01)|(1<<CS00);	//prescaler 64
 	OCR0A = 249;
-	TIMSK0 |= (1<<OCIE0A);			//CTC interrupt
+	TIMSK0 = (1<<OCIE0A);			//CTC interrupt
+}
+void init_millis_timer1(void)
+{
+	// ./utils/timer-ICRn-helper.sh "(10 ^ -3)"
+	//prescaler    1	ICRn = 15999	16bit TIMER ok
+	//prescaler    8	ICRn =  1999	16bit TIMER ok
+
+	TCCR1B = (1<<WGM12)|(1<<CS11);	//prescaler 8, CTC with top in OCR1A
+	OCR1A = 1999;
+	TIMSK1 = (1<<OCIE1A);			//CTC interrupt
+}
+void init_millis_timer2(void)
+{
+	TCCR2A = (1<<WGM21);		//CTC
+	TCCR2B = (1<<CS22);			//prescaler 64
+	OCR2A = 249;
+	TIMSK2 = (1<<OCIE2A);		//CTC interrupt
+
 }
 unsigned long micros(void)
 {

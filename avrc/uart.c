@@ -10,9 +10,9 @@
 
 void init_usart_async_normal_rxtx(unsigned long rate, unsigned char framesize, unsigned char stopsize)
 {
-	//set async mode
-	UCSR0C &= ~((1<<UMSEL01)|(1<<UMSEL00));
-	//todo: set normal mode
+	//overwrite previous configuration
+	UCSR0B = 0;
+	UCSR0C = 0;
 
 	//set stop bits
 	//here could be your if (stopsize == 2)
@@ -21,27 +21,13 @@ void init_usart_async_normal_rxtx(unsigned long rate, unsigned char framesize, u
 	//set frame size
 	//UCSZn0:1 in UCSR0C, UCSR0C2 in UCSR0B
 	if (framesize == 8)
-	{
-		UCSR0B &= ~(1<<UCSZ02);
 		UCSR0C |= (1<<UCSZ01)|(1<<UCSZ00);
-	}
 	else if (framesize == 7)
-	{
-		UCSR0B &= ~(1<<UCSZ02);
 		UCSR0C |= (1<<UCSZ01);
-		UCSR0C &= ~(1<<UCSZ00);
-	}
 	else if (framesize == 6)
-	{
-		UCSR0B &= ~(1<<UCSZ02);
 		UCSR0C |= (1<<UCSZ00);
-		UCSR0C &= ~(1<<UCSZ01);
-	}
 	else if (framesize == 5)
-	{
-		UCSR0B |= ~(1<<UCSZ02);
-		UCSR0C |= ~((1<<UCSZ01)|(1<<UCSZ00));
-	}
+		;	//UCSZ0n = 0
 	else if (framesize == 9)
 	{
 		UCSR0B |= (1<<UCSZ02);

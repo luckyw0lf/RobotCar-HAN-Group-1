@@ -15,46 +15,30 @@ ISR(ADC_vect)
 #endif
 void adc_init(unsigned char prescaler)
 {
+	//init
+	ADCSRA = 0;
+
 	if (prescaler == 128)
 		ADCSRA = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
 	else if (prescaler == 64)
-	{
 		ADCSRA = (1<<ADPS2)|(1<<ADPS1);
-		ADCSRA &= ~(1<<ADPS0);
-	}
 	else if (prescaler == 32)
-	{
 		ADCSRA = (1<<ADPS2)|(1<<ADPS0);
-		ADCSRA &= ~(1<<ADPS1);
-	}
 	else if (prescaler == 16)
-	{
 		ADCSRA = (1<<ADPS2);
-		ADCSRA &= ~((1<<ADPS1)|(1<<ADPS0));
-	}
 	else if (prescaler == 8)
-	{
 		ADCSRA = (1<<ADPS1)|(1<<ADPS0);
-		ADCSRA &= ~(1<<ADPS2);
-	}
 	else if (prescaler == 4)
-	{
 		ADCSRA = (1<<ADPS1);
-		ADCSRA &= ~((1<<ADPS2)|(1<<ADPS0));
-	}
-	else
-		ADCSRA &= ~((1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0)); //set prescaler to 2
-	
-	ADMUX = (1<<REFS0);		//AVcc with external capacitor at AREF pin
-	ADMUX &= ~(1<<REFS1);	//
+	//else prescaler set to 2
 
-	ADCSRA = (1<<ADEN); //ADC enable
-	ADCSRA &= ~(1<<ADSC); //do not start conversion
+	ADMUX = (1<<REFS0);		//AVcc with external capacitor at AREF pin
+
+	ADCSRA |= (1<<ADEN);	//ADC enable
 }
 void adc_init_free(void)
 {
 	ADMUX = (1<<REFS0);		//AVcc with external capacitor at AREF pin
-	ADMUX &= ~(1<<REFS1);	//
 	ADCSRA = 255;
 	ADCSRB = 0;
 }
@@ -82,14 +66,12 @@ void tempsensor_init(void)
 	ADMUX = (1<<REFS1)|(1<<REFS0)|(1<<MUX3);
 	//enable ADC, don't start conversion(yet)
 	ADCSRA = (1<<ADEN)|(1<<ADPS2);
-//	ADCSRA = (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
 }
 signed int tempsensor_result(signed int offset)
 {
 	signed int temperature_celcius;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		//temperature_celcius = (signed int)((ADC - offset)/1.22);
 		temperature_celcius = (signed int)(ADC - offset);
 		return (temperature_celcius);
 	}
