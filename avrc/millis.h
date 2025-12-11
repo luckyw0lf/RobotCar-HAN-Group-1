@@ -5,5 +5,6 @@
 void millis_init(void);
 
 unsigned long millis(void);
+unsigned long micros(void);
 
 #endif // MILLIS_H_

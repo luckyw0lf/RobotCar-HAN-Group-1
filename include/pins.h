@@ -19,7 +19,7 @@
 #define LED_CENTER 8
 
 //button pins
-#define BUTTON_SWITCH 0
+#define BUTTON_SWITCH A0
 
 
 #endif
