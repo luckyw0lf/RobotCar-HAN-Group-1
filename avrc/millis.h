@@ -2,6 +2,9 @@
 #ifndef MILLIS_H_
  #define MILLIS_H_
 
+#include <avr/interrupt.h>
+#include <util/atomic.h>
+
 //will be declared as extern in millis.c
 volatile unsigned long timer = 0;
 
