@@ -7,7 +7,7 @@
 #include "pwm.h"
 
 #define PRESCALER 64
-void hcsr04_init(void)
+void init_hcsr04(void)
 {
 	//CLOCK1 freq = 250kHZ
 	init_fastpwm_icr1(PRESCALER);
@@ -15,8 +15,16 @@ void hcsr04_init(void)
 	set_duty_ocr1A(3);	//16uS
 
 	//this will setup PCINT1, TODO init PCINT0 and PCINT2 and make a separated fn
-	PCICR = (1<<PCIE1);
-	PCMSK1 = (1<<PCINT13);
-	//use EICRA reg to execute ISR block on rising/falling edge only?
-	EICRA = (1<<ISC10);	//Any logical change on INT1 generates an interrupt request.
+	PCICR = (1<<PCIE2)|(1<<PCIE1)|(1<<PCIE0);
+
+	//PD5 
+	PCMSK2 = (1<<PCINT21);
+	//PB0
+	PCMSK1 = (1<<PCINT8);
+	//PC5
+	PCMSK0 = (1<<PCINT5);
+
+	//Any logical change on INT1 and INT0 generates an interrupt request.
+	EICRA = (1<<ISC10)|(1<<ISC01);
 }
+
