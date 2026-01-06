@@ -25,3 +25,8 @@ test-ultrasonic-S:
 test-ultrasonic-E:
 	avr-gcc -E -mmcu=atmega328p -O2 -std=c99 examples/test-ultrasonic.c avrc/hcsr04.h avrc/hcsr04.c avrc/toycar.h avrc/millis.c avrc/millis.h avrc/toycar.c avrc/millis.c avrc/pwm.h avrc/pwm.c avrc/millis.h  avrc/analog.c avrc/analog.h avrc/uart.c avrc/uart.h 
 
+jumptable-ultrasonic:
+	avr-gcc -mmcu=atmega328p -O2 -std=c99 examples/jumptable-ultrasonic.c avrc/hcsr04.h avrc/hcsr04.c avrc/pwm.h avrc/pwm.c avrc/uart.c avrc/uart.h -o /tmp/jumptable-ultrasonic.out
+	avr-objcopy -I elf32-avr -O ihex /tmp/jumptable-ultrasonic.out jumptable-ultrasonic.hex
+	rm /tmp/jumptable-ultrasonic.out
+
