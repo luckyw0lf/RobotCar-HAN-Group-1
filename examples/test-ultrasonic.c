@@ -41,8 +41,8 @@ ISR(USART_RX_vect)
 }
 
 extern volatile unsigned int hcsr04_distance_cm_PCINT2;	//PD5, right sensor
-extern volatile unsigned int hcsr04_distance_cm_PCINT1;	//PC0, central sensor
-extern volatile unsigned int hcsr04_distance_cm_PCINT0;	//PB5, left sensor
+extern volatile unsigned int hcsr04_distance_cm_PCINT1;	//PB0, central sensor
+extern volatile unsigned int hcsr04_distance_cm_PCINT0;	//PC5, left sensor
 
 
 volatile unsigned char sensor_status = 0;
@@ -60,41 +60,59 @@ void logic_ultrasonic(unsigned char speed)
 	sensor_status = (!(hcsr04_distance_cm_PCINT2>>4))<<2;
 	sensor_status |= (!(hcsr04_distance_cm_PCINT1>>4))<<1;
 	sensor_status |= (!(hcsr04_distance_cm_PCINT0>>4))<<0;
+ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+{
 	switch (sensor_status)
 	{
 		case 0:
 				//move forward
-			toycar_set_spd_direction(map[speed], 'f');
+			uart_putchar('0');
+			uart_putchar('\n');
+		//	toycar_set_spd_direction(map[speed], 'f');
 		case 1:
 				//obstacle on the left
 				//TURN RIGHT
-			toycar_set_spd_direction(map[speed], 'r');
+			uart_putchar('1');
+			uart_putchar('\n');
+		//	toycar_set_spd_direction(map[speed], 'r');
 		case 2:
 				//obstacle in front
 				//TURN 90 DEGREES left\right
-			toycar_set_spd_direction(map[speed], 'r');
+			uart_putchar('2');
+			uart_putchar('\n');
+		//	toycar_set_spd_direction(map[speed], 'r');
 		case 3:
 				//obstacle on left+front
 				//TURN RIGHT
-			toycar_set_spd_direction(map[speed], 'r');
+			uart_putchar('3');
+			uart_putchar('\n');
+		//	toycar_set_spd_direction(map[speed], 'r');
 		case 4:
 				//obstacle on the right
 				//TURN LEFT
-			toycar_set_spd_direction(map[speed], 'l');
+			uart_putchar('4');
+			uart_putchar('\n');
+		//	toycar_set_spd_direction(map[speed], 'l');
 		case 5:
 				//obstacle on right+left
 				//TURN left\right
-			toycar_set_spd_direction(map[speed], 'r');
+			uart_putchar('5');
+			uart_putchar('\n');
+		//	toycar_set_spd_direction(map[speed], 'r');
 		case 6:
 				//obstacle on right+centre
 				//TURN LEFT
-			toycar_set_spd_direction(map[speed], 'l');
+			uart_putchar('6');
+			uart_putchar('\n');
+		//	toycar_set_spd_direction(map[speed], 'l');
 		case 7:
 				//obstacle everywhere
 				//TURN left\right
-			toycar_set_spd_direction(map[speed], 'r');
+			uart_putchar('7');
+			uart_putchar('\n');
+		//	toycar_set_spd_direction(map[speed], 'r');
 	}
-
+}
 }
 
 #define MODE_BLUETOOTH 0
@@ -104,21 +122,18 @@ volatile unsigned char mode = MODE_ULTRASONIC;	//should changed to zero in final
 
 int main(void)
 {
-	DDRD = (1<<PD5)|(1<<PD6);	//PWM(motors)
+	DDRD = (1<<PB1);	//PWM(ultrasonic)
 
-	DDRC = (1<<PC2)|(1<<PC3)|(1<<PC4)|(1<<PC5); //motors
+	//DDRC = (1<<PC2)|(1<<PC3)|(1<<PC4)|(1<<PC5); //motors
 	
-	DDRB |= (1<<PB0);	//
-	DDRC |= (1<<PC5);	//sensors echo pin
-	DDRD |= (1<<PD5);	//
 
-	init_fastpwm_ocr0a(PWMPRESCALER);
-	set_top_in_ocr0a(249);
+//	init_fastpwm_ocr0a(PWMPRESCALER);
+//	set_top_in_ocr0a(249);
 
 	init_usart_async_normal_rxtx(9600, 8, 1);
 	enable_usart_rx_isr();
 
-	init_millis_timer2();
+//	init_millis_timer2();
 	init_hcsr04();
 
 	sei();
@@ -126,16 +141,8 @@ int main(void)
 	while (1)
 	{
 		//check for a button input here
-		switch (mode)
-		{
-			case MODE_ULTRASONIC:
 //				//stop motors
 //				toycar_set_spd_direction(0, 'f');
 				logic_ultrasonic(ultrasonic_speed);
-			case MODE_LINETRACKING:
-				;	//to be impemented
-			case MODE_BLUETOOTH:
-				;	// do nothing
-		}
 	}
 }

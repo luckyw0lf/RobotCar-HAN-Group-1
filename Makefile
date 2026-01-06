@@ -16,3 +16,12 @@ toycar-ultrasonic-S:
 toycar-ultrasonic-E:
 	avr-gcc -E -mmcu=atmega328p -O2 -std=c99 examples/toycar-ultrasonic.c avrc/hcsr04.h avrc/hcsr04.c avrc/toycar.h avrc/millis.c avrc/millis.h avrc/toycar.c avrc/millis.c avrc/pwm.h avrc/pwm.c avrc/millis.h  avrc/analog.c avrc/analog.h avrc/uart.c avrc/uart.h 
 
+test-ultrasonic:
+	avr-gcc -mmcu=atmega328p -O2 -std=c99 examples/test-ultrasonic.c avrc/hcsr04.c avrc/hcsr04.h avrc/toycar.h avrc/toycar.c avrc/pwm.h avrc/pwm.c avrc/uart.c avrc/uart.h -o /tmp/test-ultrasonic.out
+	avr-objcopy -I elf32-avr -O ihex /tmp/test-ultrasonic.out test-ultrasonic.hex
+	rm /tmp/test-ultrasonic.out
+test-ultrasonic-S:
+	avr-gcc -S -mmcu=atmega328p -O2 -std=c99 examples/test-ultrasonic.c avrc/hcsr04.h avrc/hcsr04.c avrc/toycar.h avrc/millis.c avrc/millis.h avrc/toycar.c avrc/millis.c avrc/pwm.h avrc/pwm.c avrc/millis.h  avrc/analog.c avrc/analog.h avrc/uart.c avrc/uart.h 
+test-ultrasonic-E:
+	avr-gcc -E -mmcu=atmega328p -O2 -std=c99 examples/test-ultrasonic.c avrc/hcsr04.h avrc/hcsr04.c avrc/toycar.h avrc/millis.c avrc/millis.h avrc/toycar.c avrc/millis.c avrc/pwm.h avrc/pwm.c avrc/millis.h  avrc/analog.c avrc/analog.h avrc/uart.c avrc/uart.h 
+
