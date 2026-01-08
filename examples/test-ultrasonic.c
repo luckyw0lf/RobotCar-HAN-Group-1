@@ -60,8 +60,6 @@ void logic_ultrasonic(unsigned char speed)
 	sensor_status = (!(hcsr04_distance_cm_PCINT2>>4))<<2;
 	sensor_status |= (!(hcsr04_distance_cm_PCINT1>>4))<<1;
 	sensor_status |= (!(hcsr04_distance_cm_PCINT0>>4))<<0;
-ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-{
 	switch (sensor_status)
 	{
 		case 0:
@@ -69,50 +67,57 @@ ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 			uart_putchar('0');
 			uart_putchar('\n');
 		//	toycar_set_spd_direction(map[speed], 'f');
+			break;
 		case 1:
 				//obstacle on the left
 				//TURN RIGHT
 			uart_putchar('1');
 			uart_putchar('\n');
 		//	toycar_set_spd_direction(map[speed], 'r');
+			break;
 		case 2:
 				//obstacle in front
 				//TURN 90 DEGREES left\right
 			uart_putchar('2');
 			uart_putchar('\n');
 		//	toycar_set_spd_direction(map[speed], 'r');
+			break;
 		case 3:
 				//obstacle on left+front
 				//TURN RIGHT
 			uart_putchar('3');
 			uart_putchar('\n');
 		//	toycar_set_spd_direction(map[speed], 'r');
+			break;
 		case 4:
 				//obstacle on the right
 				//TURN LEFT
 			uart_putchar('4');
 			uart_putchar('\n');
 		//	toycar_set_spd_direction(map[speed], 'l');
+			break;
 		case 5:
 				//obstacle on right+left
 				//TURN left\right
 			uart_putchar('5');
 			uart_putchar('\n');
 		//	toycar_set_spd_direction(map[speed], 'r');
+			break;
 		case 6:
 				//obstacle on right+centre
 				//TURN LEFT
 			uart_putchar('6');
 			uart_putchar('\n');
 		//	toycar_set_spd_direction(map[speed], 'l');
+			break;
 		case 7:
 				//obstacle everywhere
 				//TURN left\right
 			uart_putchar('7');
 			uart_putchar('\n');
 		//	toycar_set_spd_direction(map[speed], 'r');
+			break;
 	}
-}
 }
 
 #define MODE_BLUETOOTH 0
