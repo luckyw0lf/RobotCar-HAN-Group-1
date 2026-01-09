@@ -40,7 +40,7 @@ int main(void)
 {
 	DDRD = (1<<PD5)|(1<<PD6);	//PWM(motors)
 
-	DDRC = (1<<PC2)|(1<<PC3)|(1<<PC4)|(1<<PC5); //motors
+	DDRC = (1<<PC1)|(1<<PC2)|(1<<PC3)|(1<<PC4); //motors
 
 	init_fastpwm_ocr0a(PWMPRESCALER);
 	set_top_in_ocr0a(249);

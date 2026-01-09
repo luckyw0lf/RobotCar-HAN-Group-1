@@ -6,23 +6,23 @@
 
 void set_motorsA_backwards()
 {
-	PORTC |= (1<<PC5);
-	PORTC &= ~(1<<PC4);
+	PORTC |= (1<<PC4);
+	PORTC &= ~(1<<PC3);
 }
 void set_motorsA_forward()
 {
-	PORTC |= (1<<PC4);
-	PORTC &= ~(1<<PC5);
+	PORTC |= (1<<PC3);
+	PORTC &= ~(1<<PC4);
 }
 void set_motorsB_backwards()
 {
-	PORTC |= (1<<PC3);
-	PORTC &= ~(1<<PC2);
+	PORTC |= (1<<PC2);
+	PORTC &= ~(1<<PC1);
 }
 void set_motorsB_forward()
 {
-	PORTC |= (1<<PC2);
-	PORTC &= ~(1<<PC3);
+	PORTC |= (1<<PC1);
+	PORTC &= ~(1<<PC2);
 }
 void toycar_set_spd_direction(unsigned int speed, unsigned char direction)
 {
