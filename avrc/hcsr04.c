@@ -18,7 +18,7 @@ void init_hcsr04(void)
 	PCICR = (1<<PCIE2)|(1<<PCIE1)|(1<<PCIE0);
 
 	//Pin selection
-	PCMSK2 = (1<<PCINT21);	//pd5
+	PCMSK2 = (1<<PCINT22);	//pd6
 	PCMSK1 = (1<<PCINT13);	//pc5
 	PCMSK0 = (1<<PCINT5);	//pb5
 

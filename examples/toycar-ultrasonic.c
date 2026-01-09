@@ -57,42 +57,59 @@ void logic_ultrasonic(unsigned char speed)
 	//00000111	distance == 7, unsafe
 	//!(7>>4), aka !00000000  aka 0000001, unsafe
 	
-	sensor_status = (!(hcsr04_distance_cm_PCINT2>>4))<<2;
-	sensor_status |= (!(hcsr04_distance_cm_PCINT1>>4))<<1;
-	sensor_status |= (!(hcsr04_distance_cm_PCINT0>>4))<<0;
+	sensor_status = (!(hcsr04_distance_cm_PCINT2>>5))<<2;
+	sensor_status |= (!(hcsr04_distance_cm_PCINT1>>5))<<1;
+	sensor_status |= (!(hcsr04_distance_cm_PCINT0>>5))<<0;
+	uart_putstr("PCINT0 = ");
+	uart_putnbr(hcsr04_distance_cm_PCINT0);
+	uart_putstr(" ");
+	uart_putstr("PCINT1 = ");
+	uart_putnbr(hcsr04_distance_cm_PCINT1);
+	uart_putstr(" ");
+	uart_putstr("PCINT2 = ");
+	uart_putnbr(hcsr04_distance_cm_PCINT2);
+	uart_putstr("\r\n");
 	switch (sensor_status)
 	{
 		case 0:
 				//move forward
 			toycar_set_spd_direction(map[speed], 'f');
+			break;
 		case 1:
 				//obstacle on the left
 				//TURN RIGHT
-			toycar_set_spd_direction(map[speed], 'r');
+			toycar_set_spd_direction(map[speed+3], 'r');
+			break;
 		case 2:
 				//obstacle in front
 				//TURN 90 DEGREES left\right
-			toycar_set_spd_direction(map[speed], 'r');
+			toycar_set_spd_direction(map[speed+3], 'r');
+			break;
 		case 3:
 				//obstacle on left+front
 				//TURN RIGHT
-			toycar_set_spd_direction(map[speed], 'r');
+			toycar_set_spd_direction(map[speed+3], 'r');
+			break;
 		case 4:
 				//obstacle on the right
 				//TURN LEFT
-			toycar_set_spd_direction(map[speed], 'l');
+			toycar_set_spd_direction(map[speed+3], 'l');
+			break;
 		case 5:
 				//obstacle on right+left
 				//TURN left\right
-			toycar_set_spd_direction(map[speed], 'r');
+			toycar_set_spd_direction(map[speed+3], 'r');
+			break;
 		case 6:
 				//obstacle on right+centre
 				//TURN LEFT
-			toycar_set_spd_direction(map[speed], 'l');
+			toycar_set_spd_direction(map[speed+3], 'l');
+			break;
 		case 7:
 				//obstacle everywhere
 				//TURN left\right
-			toycar_set_spd_direction(map[speed], 'r');
+			toycar_set_spd_direction(map[speed+3], 'r');
+			break;
 	}
 
 }
@@ -104,25 +121,26 @@ volatile unsigned char mode = MODE_ULTRASONIC;	//should changed to zero in final
 
 int main(void)
 {
-	DDRD = (1<<PD5)|(1<<PD6);	//PWM(motors)
+	DDRD = (1<<PD5);	//PWM(motors)
+	DDRB = (1<<PB1);	//PWM(ultrasonic)
 
-	DDRC = (1<<PC2)|(1<<PC3)|(1<<PC4)|(1<<PC5); //motors
+	DDRC = (1<<PC1)|(1<<PC2)|(1<<PC3)|(1<<PC4); //motors
 	
-	DDRB |= (1<<PB0);	//
-	DDRC |= (1<<PC5);	//sensors echo pin
-	DDRD |= (1<<PD5);	//
+	// DDRB |= (1<<PB0);	//
+	// DDRC |= (1<<PC5);	//sensors echo pin
+	// DDRD |= (1<<PD5);	//
 
 	init_fastpwm_ocr0a(PWMPRESCALER);
 	set_top_in_ocr0a(249);
 
 	init_usart_async_normal_rxtx(9600, 8, 1);
-	enable_usart_rx_isr();
+	// enable_usart_rx_isr();
 
-	init_millis_timer2();
+	// init_millis_timer2();
 	init_hcsr04();
 
 	sei();
-	unsigned char ultrasonic_speed = 5;
+	unsigned char ultrasonic_speed = 3;
 	while (1)
 	{
 		//check for a button input here
@@ -132,10 +150,13 @@ int main(void)
 //				//stop motors
 //				toycar_set_spd_direction(0, 'f');
 				logic_ultrasonic(ultrasonic_speed);
+				break;
 			case MODE_LINETRACKING:
-				;	//to be impemented
+			break;
+					//to be impemented
 			case MODE_BLUETOOTH:
-				;	// do nothing
+			break;
+					// do nothing
 		}
 	}
 }
