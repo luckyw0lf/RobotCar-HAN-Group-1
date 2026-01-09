@@ -30,3 +30,7 @@ jumptable-ultrasonic:
 	avr-objcopy -I elf32-avr -O ihex /tmp/jumptable-ultrasonic.out jumptable-ultrasonic.hex
 	rm /tmp/jumptable-ultrasonic.out
 
+test-button:
+	avr-gcc -mmcu=atmega328p -O2 -std=c99 examples/test-button.c avrc/pwm.h avrc/millis.h avrc/millis.c avrc/button.c avrc/button.h avrc/pwm.c avrc/uart.c avrc/uart.h -o /tmp/button.out
+	avr-objcopy -I elf32-avr -O ihex /tmp/button.out button.hex
+# 	rm /tmp/button.out
