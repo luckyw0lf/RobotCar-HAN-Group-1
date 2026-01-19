@@ -124,5 +124,8 @@ void enable_hcsr04(void);
 
 void init_hcsr04_edges(void);
 
+void enable_ir(void);
+
 void enable_pcinterrupts(void);
+void disable_sensors(void);
 #endif /* HCSR04_H_ */

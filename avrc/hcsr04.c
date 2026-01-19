@@ -31,6 +31,21 @@ void enable_hcsr04(void)
 	PCMSK0 = (1<<PCINT5);	//pb5
 }
 
+void enable_ir(void)
+{
+	//Pin selection
+	PCMSK2 = (1<<PCINT19);	//pd3 right
+	PCMSK1 = (1<<PCINT8);	//pc0 middle
+	PCMSK0 = (1<<PCINT2);	//pb2 left
+}
+
+void disable_sensors(void)
+{
+	//Pin selection
+	PCMSK2 = 0;
+	PCMSK1 = 0;
+	PCMSK0 = 0;
+}
 extern volatile signed char edge_PCINT2;
 extern volatile signed char edge_PCINT1;
 extern volatile signed char edge_PCINT0;
