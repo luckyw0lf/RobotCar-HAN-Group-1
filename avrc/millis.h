@@ -11,7 +11,7 @@ volatile unsigned long timer = 0;
 //MILLIS_TIMER macros will be expanded to an actual ISR vector
 //to select a clock for millis(), #define MILLIS_TIMER TIMERn_COMPA_vect
 //BEFORE including millis.h
-ISR(MILLIS_TIMER)
+ISR(TIMER2_COMPA_vect)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 		timer++;

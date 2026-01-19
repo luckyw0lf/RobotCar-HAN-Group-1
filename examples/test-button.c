@@ -1,5 +1,5 @@
 #define F_CPU 16000000UL
-#define MILLIS_TIMER TIMER2_COMPA_vect
+// #define MILLIS_TIMER TIMER2_COMPA_vect
 #include "../avrc/button.h"
 #include "../avrc/uart.h"
 
