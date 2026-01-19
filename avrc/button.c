@@ -1,5 +1,5 @@
 //GPL-3.0-only
-#define MILLIS_TIMER TIMER2_COMPA_vect
+// #define MILLIS_TIMER TIMER2_COMPA_vect
 #include "../avrc/millis.h"
 #include <avr/io.h>
 
