@@ -7,6 +7,14 @@
 #include "pwm.h"
 
 #define PRESCALER 64
+void enable_pcinterrupts(void)
+{
+	//Enabling interrupts
+	PCICR = (1<<PCIE2)|(1<<PCIE1)|(1<<PCIE0);
+
+	//Any logical change on INT1 and INT0 generates an interrupt request.
+	EICRA = (1<<ISC10)|(1<<ISC01);
+}
 void init_hcsr04(void)
 {
 	//CLOCK1 freq = 250kHZ
@@ -14,16 +22,13 @@ void init_hcsr04(void)
 	set_top_in_icr1(pwm_ICRn_val(F_CPU, 10, PRESCALER));
 	set_duty_ocr1A(3);	//16uS
 
-	//Enabling interrupts
-	PCICR = (1<<PCIE2)|(1<<PCIE1)|(1<<PCIE0);
-
+}
+void enable_hcsr04(void)
+{
 	//Pin selection
 	PCMSK2 = (1<<PCINT22);	//pd6
 	PCMSK1 = (1<<PCINT13);	//pc5
 	PCMSK0 = (1<<PCINT5);	//pb5
-
-	//Any logical change on INT1 and INT0 generates an interrupt request.
-	EICRA = (1<<ISC10)|(1<<ISC01);
 }
 
 extern volatile signed char edge_PCINT2;

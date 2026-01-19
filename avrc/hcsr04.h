@@ -120,5 +120,9 @@ ISR(PCINT0_vect)
 
 void init_hcsr04(void); 
 
+void enable_hcsr04(void);
+
 void init_hcsr04_edges(void);
+
+void enable_pcinterrupts(void);
 #endif /* HCSR04_H_ */

@@ -48,18 +48,10 @@ extern volatile unsigned int hcsr04_distance_cm_PCINT0;	//PB5, left sensor
 volatile unsigned char sensor_status = 0;
 void logic_ultrasonic(unsigned char speed)
 {
-	//00010000	distance == 16, safe
-	//!(16>>4), aka !00000001, aka 0000000, safe
-	//
-	//00010001	distance == 17, safe
-	//!(17>>4), aka !00000001, aka 0000000, safe
-	//
-	//00000111	distance == 7, unsafe
-	//!(7>>4), aka !00000000  aka 0000001, unsafe
-	
 	sensor_status = (!(hcsr04_distance_cm_PCINT2>>5))<<2;
 	sensor_status |= (!(hcsr04_distance_cm_PCINT1>>5))<<1;
 	sensor_status |= (!(hcsr04_distance_cm_PCINT0>>5))<<0;
+
 	uart_putstr("PCINT0 = ");
 	uart_putnbr(hcsr04_distance_cm_PCINT0);
 	uart_putstr(" ");
@@ -69,6 +61,7 @@ void logic_ultrasonic(unsigned char speed)
 	uart_putstr("PCINT2 = ");
 	uart_putnbr(hcsr04_distance_cm_PCINT2);
 	uart_putstr("\r\n");
+
 	switch (sensor_status)
 	{
 		case 0:
@@ -138,6 +131,8 @@ int main(void)
 
 	// init_millis_timer2();
 	init_hcsr04();
+	enable_hcsr04();
+	enable_pcinterrupts();
 
 	sei();
 	unsigned char ultrasonic_speed = 3;
@@ -147,8 +142,6 @@ int main(void)
 		switch (mode)
 		{
 			case MODE_ULTRASONIC:
-//				//stop motors
-//				toycar_set_spd_direction(0, 'f');
 				logic_ultrasonic(ultrasonic_speed);
 				break;
 			case MODE_LINETRACKING:
