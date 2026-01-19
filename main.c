@@ -16,8 +16,12 @@
 #include "avrc/pwm.h"
 #include "avrc/toycar.h"
 #include "avrc/hcsr04.h"
+
+#define MODE_BLUETOOTH 0
+#define MODE_ULTRASONIC 1
+#define MODE_LINETRACKING 2
+
 volatile unsigned char mode = 0;
-// #include "avrc/button.h"
 
 extern volatile unsigned long timer;
 unsigned long oldTime;
@@ -37,15 +41,34 @@ unsigned int map[10] = {0, 50, 75, 100, 125, 150, 175, 200, 225, 249};
 
 ISR(USART_RX_vect)
 {
-	if (global_i < RXBUF)
-	{
-		global_buf[global_i++] = UDR0;
+	global_buf[global_i++] = UDR0;
 
-		if (global_buf[global_i-1] == '\n' || global_i >= RXBUF-1)
+	if (global_buf[global_i-1] == '\n' || global_i >= RXBUF-1)
+	{
+		toycar_set_spd_direction(map[global_buf[0]-48], global_buf[1]);
+		if (global_buf[2] == 'c')
 		{
-			toycar_set_spd_direction(map[global_buf[0]-48], global_buf[1]);
-			global_i = 0;
+			if (mode > 1) 
+				mode = 0;
+			else 
+				mode++;
+
+			if(mode == MODE_ULTRASONIC)
+			{
+				disable_sensors();
+				init_hcsr04_edges();
+				enable_hcsr04();
+			}
+			else if(mode == MODE_BLUETOOTH)
+				toycar_set_spd_direction(0, 'b');
+			else if(mode == MODE_LINETRACKING)
+			{
+				disable_sensors();
+				enable_ir();
+			}
+	
 		}
+		global_i = 0;
 	}
 }
 
@@ -154,9 +177,6 @@ void logic_ir(unsigned char speed)
 			break;
 	}
 }
-#define MODE_BLUETOOTH 0
-#define MODE_ULTRASONIC 1
-#define MODE_LINETRACKING 2
 
 
 int main(void)
