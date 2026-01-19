@@ -1,6 +1,6 @@
 //GPL-3.0-only
 // #define MILLIS_TIMER TIMER2_COMPA_vect
-#include "../avrc/millis.h"
+// #include "../avrc/millis.h"
 #include <avr/io.h>
 
 #define DEBOUNCE_DELAY 50
@@ -17,8 +17,8 @@ signed char reset = 1;
  * WARNING! this initializes milis timer 2 for the button!
  */
 void initButton(){
-  init_millis_timer2();
-  sei();
+  // init_millis_timer2();
+  // sei();
 }
 
 void checkButton() {

@@ -5,6 +5,8 @@
 #define PWMFREQ 250
 #define PWMPRESCALER 256
 
+#define DEBOUNCE_DELAY 50
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/atomic.h>
@@ -15,9 +17,15 @@
 #include "avrc/toycar.h"
 #include "avrc/hcsr04.h"
 volatile unsigned char mode = 0;
-#include "avrc/button.h"
+// #include "avrc/button.h"
 
 extern volatile unsigned long timer;
+unsigned long oldTime;
+unsigned long deltaTime;
+unsigned long lastDebounceTime = 0;
+signed char lastButtonState = 1; 
+signed char reset = 1; 
+
 
 //format: 9f\n\0
 //format: 4l\n\0
@@ -175,7 +183,42 @@ int main(void)
 	unsigned char default_speed = 3;
 	while (1)
 	{
-		checkButton();
+		// checkButton();
+		 int reading = (PINB & (1 << PINB7));
+
+	// Debounce logic
+	if (reading != lastButtonState) {
+		lastDebounceTime = millis();
+	}	
+	
+	if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+		// Button is stable
+		if (reset == 0) {
+			reset = 1;
+			if (mode > 1) 
+				mode = 0;
+			else 
+				mode++;
+			
+			if(mode == MODE_ULTRASONIC)
+			{
+				disable_sensors();
+				init_hcsr04_edges();
+				enable_hcsr04();
+			}
+			else if(mode == MODE_BLUETOOTH)
+				toycar_set_spd_direction(0, 'b');
+			else if(mode == MODE_LINETRACKING)
+			{
+				disable_sensors();
+				enable_ir();
+			}
+		}
+	} else {
+		reset = 0;
+	}
+
+lastButtonState = reading;
 		switch (mode)
 		{
 			case MODE_ULTRASONIC:

@@ -1,7 +1,8 @@
-toycar:
-	avr-gcc -mmcu=atmega328p -O2 -std=c99 toycar.c avrc/button.c avrc/button.h avrc/hcsr04.c avrc/hcsr04.h avrc/toycar.h avrc/millis.c avrc/millis.h avrc/toycar.c  avrc/pwm.h avrc/pwm.c  avrc/analog.c avrc/analog.h avrc/uart.c avrc/uart.h -o /tmp/toycar.out
-	avr-objcopy -I elf32-avr -O ihex /tmp/toycar.out toycar.hex
-	rm /tmp/toycar.out
+main:
+	avr-gcc -mmcu=atmega328p -O2 -std=c99 main.c avrc/hcsr04.c avrc/hcsr04.h avrc/toycar.h avrc/millis.c avrc/millis.h avrc/toycar.c  avrc/pwm.h avrc/pwm.c  avrc/analog.c avrc/analog.h avrc/uart.c avrc/uart.h -o /tmp/main.out
+	avr-objcopy -I elf32-avr -O ihex /tmp/main.out main.hex
+# 	rm /tmp/main.out
+
 toycar-uart-control:
 	avr-gcc -mmcu=atmega328p -O2 -std=c99 examples/toycar-uart-control.c avrc/toycar.h avrc/toycar.c  avrc/pwm.h avrc/pwm.c  avrc/analog.c avrc/analog.h avrc/uart.c avrc/uart.h -o /tmp/toycar-uart-control.out
 	avr-objcopy -I elf32-avr -O ihex /tmp/toycar-uart-control.out toycar-uart-control.hex
