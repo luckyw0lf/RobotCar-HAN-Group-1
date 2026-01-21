@@ -22,6 +22,7 @@
 #define MODE_LINETRACKING 2
 
 volatile unsigned char mode = 0;
+// #include "avrc/button.h"
 
 extern volatile unsigned long timer;
 unsigned long oldTime;
@@ -40,12 +41,12 @@ volatile unsigned char global_i = 0;
 unsigned int map[10] = {0, 50, 75, 100, 125, 150, 175, 200, 225, 249};
 
 ISR(USART_RX_vect)
-{
-	global_buf[global_i++] = UDR0;
-
-	if (global_buf[global_i-1] == '\n' || global_i >= RXBUF-1)
 	{
-		toycar_set_spd_direction(map[global_buf[0]-48], global_buf[1]);
+		global_buf[global_i++] = UDR0;
+
+		if (global_buf[global_i-1] == '\n' || global_i >= RXBUF-1)
+		{
+			toycar_set_spd_direction(map[global_buf[0]-48], global_buf[1]);
 		if (global_buf[2] == 'c')
 		{
 			if (mode > 1) 
@@ -68,7 +69,7 @@ ISR(USART_RX_vect)
 			}
 	
 		}
-		global_i = 0;
+			global_i = 0;
 	}
 }
 
@@ -147,36 +148,39 @@ void logic_ir(unsigned char speed)
 			break;
 		case 1:
 		//should not happen
-			toycar_set_spd_direction(map[speed], 'f');
+			toycar_set_spd_direction(60, 'f');
 			break;
 		case 2:
-			toycar_set_spd_direction(map[speed+1], 'r');
+			toycar_set_spd_direction(map[speed+2], 'r');
 			break;
 		case 3:
-			toycar_set_spd_direction(map[speed+1], 'r');
+			toycar_set_spd_direction(map[speed+2], 'r');
 			break;
 		case 4:
 				//obstacle on the right
 				//TURN LEFT
-			toycar_set_spd_direction(map[speed+1], 'l');
+			toycar_set_spd_direction(map[speed+2], 'l');
 			break;
 		case 5:
 				//obstacle on right+left
 				//TURN left\right
-			toycar_set_spd_direction(map[speed+1], 'l');
+			toycar_set_spd_direction(map[speed+2], 'l');
 			break;
 		case 6:
 				//obstacle on right+centre
 				//TURN LEFT
-			toycar_set_spd_direction(map[speed], 'f');
+			toycar_set_spd_direction(60, 'f');
 			break;
 		case 7:
 				//obstacle everywhere
 				//TURN left\right
-			toycar_set_spd_direction(map[speed], 'f');
+			toycar_set_spd_direction(60, 'f');
 			break;
 	}
 }
+#define MODE_BLUETOOTH 0
+#define MODE_ULTRASONIC 1
+#define MODE_LINETRACKING 2
 
 
 int main(void)
@@ -200,11 +204,11 @@ int main(void)
   	init_millis_timer2();
 	sei();
 
-	unsigned char default_speed = 3;
+	unsigned char default_speed = 1;
 	while (1)
 	{
-		// checkButton();
-		 int reading = (PINB & (1 << PINB7));
+	// checkButton();
+	int reading = (PINB & (1 << PINB7));
 
 	// Debounce logic
 	if (reading != lastButtonState) {
@@ -242,7 +246,7 @@ lastButtonState = reading;
 		switch (mode)
 		{
 			case MODE_ULTRASONIC:
-				logic_ultrasonic(default_speed);
+				logic_ultrasonic(default_speed+2);
 				break;
 			case MODE_LINETRACKING:
 				logic_ir(default_speed);
